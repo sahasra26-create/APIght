@@ -1,5 +1,5 @@
 """
-BizForge AI Services
+InKraft AI Services
 Integrates: Groq (LLaMA-3.3-70B) · IBM Granite (HuggingFace) · Stable Diffusion XL
 """
 
@@ -47,12 +47,12 @@ else:
     print("⚠️   HF_API_KEY not set — chatbot will use Groq fallback")
 
 # ── SDXL via HuggingFace Inference API ───────────────────────────────────────
-SDXL_URL = "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+SDXL_URL =  "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0"
 
 
 # ─────────────────── Helper ──────────────────────────────────────────────────
 
-def _groq(prompt: str, system: str = "You are BizForge, an expert AI branding assistant.", max_tokens: int = 512) -> str:
+def _groq(prompt: str, system: str = "You are InKraft, an expert AI branding assistant.", max_tokens: int = 512) -> str:
     if not groq_client:
         return _mock_response(prompt)
     resp = groq_client.chat.completions.create(
@@ -83,7 +83,7 @@ def _mock_response(prompt: str) -> str:
 
 async def generate_brand_names(keywords: str, industry: str, tone: str, language: str) -> str:
     system = (
-        "You are BizForge, a world-class brand strategist. "
+        "You are InKraft, a world-class brand strategist. "
         "Generate creative, memorable, and brand-ready business names. "
         "Each name must be unique, easy to spell, and suitable for trademark registration."
     )
@@ -110,7 +110,7 @@ async def generate_marketing_content(description: str, tone: str, content_type: 
         "tagline":             "5 memorable taglines/slogans",
     }
     ctype = type_map.get(content_type, "marketing content")
-    system = "You are BizForge, an expert copywriter and brand voice specialist."
+    system = "You are InKraft, an expert copywriter and brand voice specialist."
     prompt = (
         f"Write {ctype} for the following brand:\n\n"
         f"Brand Description: {description}\n"
@@ -122,21 +122,22 @@ async def generate_marketing_content(description: str, tone: str, content_type: 
 
 
 async def analyze_sentiment(text: str, brand_tone: str) -> str:
-    system = "You are BizForge, a brand analytics and sentiment analysis expert."
+    system = "You are InKraft, a brand analytics and sentiment analysis expert."
     prompt = (
         f"Analyze this customer review and provide:\n"
         f"1. Overall Sentiment: Positive / Neutral / Negative\n"
         f"2. Confidence Score: X/10\n"
         f"3. Key Emotional Signals\n"
         f"4. Brand Tone Alignment (vs target tone: {brand_tone})\n"
-        f"5. Professional Rewrite of the review\n\n"
+        f"5. Suggest changes with respect to the review\n"
+        f"6. Generate a reply to improve brand image based on the harshness of the review\n\n"
         f"Review:\n{text}"
     )
     return await asyncio.to_thread(_groq, prompt, system, 400)
 
 
 async def get_color_palette(tone: str, industry: str) -> str:
-    system = "You are BizForge, a brand identity designer and color theory expert."
+    system = "You are InKraft, a brand identity designer and color theory expert."
     prompt = (
         f"Suggest a professional brand color palette for:\n"
         f"Industry: {industry}\n"
@@ -160,13 +161,13 @@ async def chat_with_ai(message: str) -> str:
         try:
             result = await asyncio.to_thread(
                 granite_pipeline,
-                f"You are BizForge, an expert branding assistant. User: {message}\nAssistant:"
+                f"You are InKraft, an expert branding assistant. User: {message}\nAssistant:"
             )
             return result[0]["generated_text"].split("Assistant:")[-1].strip()
         except Exception:
             pass  # fall through to Groq
     system = (
-        "You are BizForge, an expert AI branding consultant. "
+        "You are InKraft, an expert AI branding consultant. "
         "Give concise, actionable, expert branding advice. "
         "Be warm, professional, and inspiring."
     )
@@ -174,7 +175,7 @@ async def chat_with_ai(message: str) -> str:
 
 
 async def generate_logo_prompt(brand_name: str, industry: str, keywords: str) -> str:
-    system = "You are BizForge, a professional logo designer and visual branding expert."
+    system = "You are InKraft, a professional logo designer and visual branding expert."
     prompt = (
         f"Create a detailed, professional logo prompt for:\n"
         f"Brand Name: {brand_name}\n"

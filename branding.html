@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BizForge — Branding Studio</title>
+<title>InKraft — Branding Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -513,7 +513,7 @@
     <div class="tab-panel" id="tab-logo">
       <div class="panel-header">
         <h2>🎨 Logo Generator</h2>
-        <p>Generate AI-crafted logo concepts and SDXL-powered logo images.</p>
+        <p>Generate AI-crafted logo concepts and AI-powered logo images.</p>
       </div>
       <div class="form-card">
         <div class="form-group">
@@ -535,11 +535,13 @@
           </div>
         </div>
         <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
-          <button class="btn btn-gold" onclick="generateLogoPrompt()">✦ Generate Logo Concept</button>
-          <button class="btn btn-primary" onclick="generateLogoImage()" id="gen-img-btn" style="display:none">🖼️ Generate Image (SDXL)</button>
+          
+         <button class="btn btn-gold" onclick="generateLogoImage()">✦ Generate Logo </button>
+          <button class="btn btn-primary" onclick="generateLogoImage()" id="gen-img-btn" style="display:none">🖼️ Generate Image</button>
+          
         </div>
       </div>
-      <div class="loading" id="logo-loading"><div class="spinner"></div> Generating logo concept...</div>
+      <div class="loading" id="logo-loading"><div class="spinner"></div> Generating logo...</div>
       <div class="result-card gold-accent" id="logo-result">
         <div class="result-label">✦ Logo Concept <button class="copy-btn" onclick="copyResult('logo-result-content')">Copy</button></div>
         <div class="result-content" id="logo-result-content"></div>
@@ -659,7 +661,7 @@
       </div>
       <div class="chat-window" id="chat-window">
         <div class="msg bot">
-          <div class="msg-sender">BizForge AI</div>
+          <div class="msg-sender">InKraft AI</div>
           Hi! I'm your AI branding consultant powered by IBM Granite. Ask me anything — brand strategy, naming, logo ideas, marketing copy, or color theory. I'm here to help! 🚀
         </div>
       </div>
@@ -870,14 +872,14 @@ async function sendChat() {
 
   // Typing indicator
   const typingId = 'typing-' + Date.now();
-  win.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-sender">BizForge AI</div><span style="opacity:0.5">Thinking...</span></div>`;
+  win.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-sender">InKraft AI</div><span style="opacity:0.5">Thinking...</span></div>`;
   win.scrollTop = win.scrollHeight;
 
   try {
     const data = await postAPI('/api/chat', { message: msg });
-    document.getElementById(typingId).innerHTML = `<div class="msg-sender">BizForge AI</div>${escapeHtml(data.content || data)}`;
+    document.getElementById(typingId).innerHTML = `<div class="msg-sender">InKraft AI</div>${escapeHtml(data.content || data)}`;
   } catch(e) {
-    document.getElementById(typingId).innerHTML = `<div class="msg-sender">BizForge AI</div>❌ ${e.message}`;
+    document.getElementById(typingId).innerHTML = `<div class="msg-sender">InKraft AI</div>❌ ${e.message}`;
   }
   win.scrollTop = win.scrollHeight;
 }

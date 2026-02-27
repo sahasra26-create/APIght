@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = FastAPI(title="BizForge API", version="1.0.0")
+app = FastAPI(title="InKraft API", version="1.0.0")
 
 # CORS
 app.add_middleware(
@@ -24,7 +24,7 @@ frontend_path = Path(__file__).parent.parent / "frontend"
 app.mount("/static", StaticFiles(directory=str(frontend_path / "static")), name="static")
 
 # Import AI services
-from backend.ai_services import (
+from ai_services import (
     generate_brand_names,
     generate_marketing_content,
     analyze_sentiment,
@@ -123,9 +123,9 @@ async def generate_logo_endpoint(request: dict):
 
 # Logo Image (SDXL)
 @app.post("/api/generate-logo-image")
-async def generate_gemini_image_endpoint(request: dict):
+async def generate_logo_image_endpoint(request: dict):
     try:
-        result = await generate_gemini_image(request.get("prompt", ""))
+        result = await generate_logo_image(request.get("prompt", ""))
         return {"success": True, "data": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -133,7 +133,7 @@ async def generate_gemini_image_endpoint(request: dict):
 if __name__ == "__main__":
     import uvicorn
     print("\n" + "="*60)
-    print("🚀  BizForge Backend Started!")
+    print("🚀  InKraft Backend Started!")
     print("="*60)
     print("🌐  API running at http://localhost:8000")
     print("📁  Frontend path:", frontend_path)
