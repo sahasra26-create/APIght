@@ -6,54 +6,6 @@ BizForge is a full-stack AI branding automation platform. Give it your business 
 
 ---
 
-## 🚀 Quick Start (5 Steps)
-
-### Step 1 — Get API Keys (FREE)
-
-| Key | Where to Get |
-|-----|-------------|
-| `GROQ_API_KEY` | https://console.groq.com/keys |
-| `HF_API_KEY` | https://huggingface.co/settings/tokens |
-
-### Step 2 — Clone & Navigate
-```bash
-cd bizforge
-```
-
-### Step 3 — Set Up Environment
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Mac / Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### Step 4 — Install Dependencies
-```bash
-cd backend
-pip install -r requirements.txt
-```
-
-### Step 5 — Configure & Run
-```bash
-# 1. Copy the env template
-cp .env.example .env
-
-# 2. Edit .env with your keys:
-#    GROQ_API_KEY=gsk_...
-#    HF_API_KEY=hf_...
-
-# 3. Start the server
-python main.py
-```
-
-### ✅ Open http://localhost:8000
-
----
-
 ## 🌟 Features
 
 | Feature | Model Used | Endpoint |
@@ -107,22 +59,6 @@ FastAPI Backend (main.py) — localhost:8000
      ├── /api/analyze-sentiment ► Groq Cloud (LLaMA-3.3-70B-Versatile)
      └── /api/chat            ──► IBM Granite 4.0 (HuggingFace)
                                    (falls back to Groq if Granite unavailable)
-```
-
----
-
-## 🧪 API Test with curl
-
-```bash
-# Test Brand Name Generator
-curl -X POST http://localhost:8000/api/generate-brand \
-  -H "Content-Type: application/json" \
-  -d '{"keywords":"smart AI startup","industry":"Technology","tone":"Professional","language":"en"}'
-
-# Test Chat
-curl -X POST http://localhost:8000/api/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message":"What makes a strong brand name?"}'
 ```
 
 ---
@@ -189,7 +125,3 @@ All endpoints accept/return JSON.
 - **Requests** — SDXL Inference API calls
 - **Pillow** — Image processing
 - **python-dotenv** — Environment variable management
-
----
-
-*Built for SmartBridge × SkillWallet Hackathon 2025*
