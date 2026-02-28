@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BizForge — Branding Studio</title>
+<title>InKraft — Branding Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink: #0a0a0f;
@@ -17,10 +17,22 @@
     --muted: #7a7570;
     --white: #ffffff;
     --border: rgba(10,10,15,0.1);
-    --sidebar-w: 240px;
+    --sidebar-w: 260px;
+    --content-max: 820px;
   }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: #f0ece4; color: var(--ink); display: flex; min-height: 100vh; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #eeeae0;
+    color: var(--ink);
+    display: flex;
+    min-height: 100vh;
+    font-size: 16px;
+    overflow-x: hidden;
+    
+  }
 
   /* ── SIDEBAR ── */
   .sidebar {
@@ -33,68 +45,91 @@
     top: 0; left: 0; bottom: 0;
     z-index: 50;
     transition: transform 0.3s;
+    box-shadow: 4px 0 30px rgba(0,0,0,0.15);
   }
 
   .sidebar-header {
-    padding: 1.5rem 1.5rem 1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 2rem 1.8rem 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
   }
 
   .sidebar-logo {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem;
-    letter-spacing: 2px;
+    font-size: 2rem;
+    letter-spacing: 3px;
     color: var(--paper);
     text-decoration: none;
     display: block;
+    line-height: 1;
   }
   .sidebar-logo span { color: var(--ember); }
 
   .sidebar-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(245,240,232,0.3);
-    margin-top: 0.2rem;
+    margin-top: 0.4rem;
   }
 
-  .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+  .sidebar-nav { flex: 1; padding: 1.2rem 0; overflow-y: auto; }
+  .comparison-sidebar {
+    width: 300px;
+    background: white;
+    border-left: 1px solid var(--border);
+    height: 100vh;
+    position: fixed;
+    right: -300px; /* Hidden by default */
+    top: 0;
+    transition: right 0.3s ease;
+    padding: 20px;
+    z-index: 100;
+}
+ .comparison-sidebar.open {
+    right: 0; /* Slide in when open */
+ }
 
   .nav-section-title {
-    font-size: 0.6rem;
-    letter-spacing: 0.15em;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(245,240,232,0.25);
-    padding: 0.8rem 1.5rem 0.4rem;
+    color: rgba(245,240,232,0.22);
+    padding: 1rem 1.8rem 0.5rem;
+    font-weight: 600;
   }
 
   .nav-item {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    padding: 0.75rem 1.5rem;
+    gap: 0.9rem;
+    padding: 0.85rem 1.8rem;
     cursor: pointer;
-    border-left: 2px solid transparent;
-    transition: background 0.2s, border-color 0.2s;
-    font-size: 0.875rem;
+    border-left: 3px solid transparent;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    font-size: 0.95rem;
     font-weight: 500;
-    color: rgba(245,240,232,0.5);
+    color: rgba(245,240,232,0.45);
     user-select: none;
+    letter-spacing: 0.01em;
   }
-  .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--paper); }
+  .nav-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--paper);
+  }
   .nav-item.active {
-    background: rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.08);
     border-left-color: var(--ember);
     color: var(--paper);
   }
-  .nav-item .nav-icon { font-size: 1rem; width: 20px; text-align: center; }
+  .nav-item .nav-icon { font-size: 1.1rem; width: 22px; text-align: center; }
 
   .sidebar-footer {
-    padding: 1rem 1.5rem;
+    padding: 1.2rem 1.8rem;
     border-top: 1px solid rgba(255,255,255,0.06);
     font-size: 0.72rem;
-    color: rgba(245,240,232,0.2);
+    color: rgba(245,240,232,0.18);
+    line-height: 1.6;
   }
 
   /* ── MAIN CONTENT ── */
@@ -104,141 +139,276 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    margin-right: 0; 
+    transition: margin-right 0.3s ease;
+    
   }
 
   /* Topbar */
   .topbar {
-    background: white;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-    padding: 0.9rem 2rem;
+    padding: 1.1rem 2.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 40;
+    box-shadow: 0 1px 20px rgba(10,10,15,0.06);
   }
 
   .topbar-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
     color: var(--ink);
   }
 
-  .topbar-right { display: flex; align-items: center; gap: 1rem; }
+  .topbar-right { display: flex; align-items: center; gap: 1.2rem; }
 
-  .lang-select {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+  /* ── CUSTOM LANGUAGE PICKER ── */
+  .lang-picker {
+    position: relative;
+    user-select: none;
+  }
+
+  .lang-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
     background: white;
     cursor: pointer;
-    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+    min-width: 130px;
   }
+  .lang-trigger:hover {
+    border-color: rgba(10,10,15,0.25);
+    box-shadow: 0 2px 8px rgba(10,10,15,0.08);
+  }
+  .lang-trigger.open {
+    border-color: var(--ember);
+    box-shadow: 0 0 0 3px rgba(224,92,42,0.1);
+  }
+
+  .lang-flag { font-size: 1.1rem; line-height: 1; }
+  .lang-label { flex: 1; }
+  .lang-caret {
+    font-size: 0.6rem;
+    opacity: 0.45;
+    transition: transform 0.2s;
+  }
+  .lang-trigger.open .lang-caret { transform: rotate(180deg); }
+
+  .lang-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(10,10,15,0.14);
+    z-index: 200;
+    min-width: 160px;
+    animation: dropIn 0.15s ease;
+  }
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .lang-dropdown.open { display: block; }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem 1rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    color: var(--ink);
+  }
+  .lang-option:hover { background: #f5f0e8; }
+  .lang-option.selected {
+    background: rgba(224,92,42,0.07);
+    color: var(--ember);
+    font-weight: 700;
+  }
+  .lang-option .opt-flag { font-size: 1.1rem; }
 
   .status-dot {
-    display: flex; align-items: center; gap: 0.4rem;
-    font-size: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.82rem;
     color: var(--muted);
+    font-weight: 500;
   }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 6px rgba(34,197,94,0.5);
+  }
   @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
 
-  /* Content area */
-  .content { flex: 1; padding: 2rem; max-width: 900px; }
+  /* Content area — centered */
+  .content {
+    flex: 1;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .content-inner {
+    width: 100%;
+    max-width: var(--content-max);
+  }
 
   /* Tab panels */
-  .tab-panel { display: none; }
+  .tab-panel { display: none; width: 100%; }
   .tab-panel.active { display: block; }
 
   /* ── SHARED PANEL STYLES ── */
   .panel-header {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
   }
+
+  .panel-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
   .panel-header h2 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    letter-spacing: 1px;
-    margin-bottom: 0.3rem;
+    font-size: 3rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
     line-height: 1;
+    color: var(--ink);
   }
-  .panel-header p { font-size: 0.875rem; color: var(--muted); }
+
+  .panel-header p {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 540px;
+  }
 
   /* Form card */
   .form-card {
     background: white;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.8rem;
-    margin-bottom: 1.5rem;
+    border: 1px solid rgba(10,10,15,0.08);
+    border-radius: 16px;
+    padding: 2.2rem;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 4px 30px rgba(10,10,15,0.06);
   }
 
-  .form-group { margin-bottom: 1.2rem; }
+  .form-group { margin-bottom: 1.4rem; }
+  .form-group:last-child { margin-bottom: 0; }
+
   .form-group label {
     display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.55rem;
   }
 
   .form-group input,
   .form-group textarea,
   .form-group select {
     width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    border: 1.5px solid rgba(10,10,15,0.12);
+    border-radius: 10px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     background: #fafaf8;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
     color: var(--ink);
+    line-height: 1.4;
   }
   .form-group input:focus,
   .form-group textarea:focus,
-  .form-group select:focus { border-color: var(--ember); background: white; }
+  .form-group select:focus {
+    border-color: var(--ember);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(224,92,42,0.08);
+  }
 
-  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-group textarea { resize: vertical; min-height: 100px; }
 
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 
   /* Buttons */
   .btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.8rem 1.6rem;
-    border: none; border-radius: 8px;
+    padding: 0.9rem 1.8rem;
+    border: none; border-radius: 10px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem; font-weight: 600;
+    font-size: 1rem; font-weight: 600;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    letter-spacing: 0.01em;
   }
-  .btn:hover { transform: translateY(-1px); }
-  .btn:active { transform: none; }
-  .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
-  .btn-primary { background: var(--ember); color: white; box-shadow: 0 4px 15px rgba(224,92,42,0.25); }
-  .btn-primary:hover { box-shadow: 0 8px 25px rgba(224,92,42,0.35); }
+  .btn-primary {
+    background: var(--ember);
+    color: white;
+    box-shadow: 0 4px 20px rgba(224,92,42,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 8px 30px rgba(224,92,42,0.4); }
+
   .btn-dark { background: var(--ink); color: var(--paper); }
-  .btn-teal { background: var(--teal); color: white; box-shadow: 0 4px 15px rgba(31,168,158,0.25); }
-  .btn-violet { background: var(--violet); color: white; }
-  .btn-gold { background: var(--gold); color: var(--ink); }
-  .btn-sm { padding: 0.5rem 1rem; font-size: 0.8rem; }
+  .btn-dark:hover { box-shadow: 0 6px 20px rgba(10,10,15,0.25); }
+
+  .btn-teal { background: var(--teal); color: white; box-shadow: 0 4px 20px rgba(31,168,158,0.25); }
+  .btn-teal:hover { box-shadow: 0 8px 30px rgba(31,168,158,0.35); }
+
+  .btn-violet { background: var(--violet); color: white; box-shadow: 0 4px 20px rgba(124,106,242,0.25); }
+  .btn-violet:hover { box-shadow: 0 8px 30px rgba(124,106,242,0.35); }
+
+  .btn-gold { background: var(--gold); color: var(--ink); box-shadow: 0 4px 20px rgba(232,184,75,0.3); }
+  .btn-gold:hover { box-shadow: 0 8px 30px rgba(232,184,75,0.4); }
+
+  .btn-sm { padding: 0.55rem 1.1rem; font-size: 0.875rem; }
 
   /* Results */
   .result-card {
     background: white;
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.5rem;
+    border-radius: 16px;
+    padding: 1.8rem;
     border-left: 4px solid var(--ember);
     display: none;
+    box-shadow: 0 4px 30px rgba(10,10,15,0.06);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   .result-card.show { display: block; }
   .result-card.teal-accent { border-left-color: var(--teal); }
@@ -247,17 +417,17 @@
 
   .result-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.8rem;
-    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
   }
 
   .result-content {
-    font-size: 0.9rem;
-    line-height: 1.8;
+    font-size: 1rem;
+    line-height: 1.9;
     color: var(--ink);
     white-space: pre-wrap;
   }
@@ -266,18 +436,20 @@
   .loading {
     display: none;
     align-items: center;
-    gap: 0.6rem;
-    padding: 1rem;
-    font-size: 0.85rem;
+    gap: 0.8rem;
+    padding: 1.2rem;
+    font-size: 0.95rem;
     color: var(--muted);
+    font-style: italic;
   }
   .loading.show { display: flex; }
   .spinner {
-    width: 18px; height: 18px;
-    border: 2px solid var(--border);
+    width: 20px; height: 20px;
+    border: 2.5px solid var(--border);
     border-top-color: var(--ember);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -285,22 +457,23 @@
   .chat-window {
     background: white;
     border: 1px solid var(--border);
-    border-radius: 12px;
-    height: 400px;
+    border-radius: 16px;
+    height: 440px;
     overflow-y: auto;
-    padding: 1.2rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 30px rgba(10,10,15,0.06);
   }
 
   .msg {
-    max-width: 80%;
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
-    font-size: 0.875rem;
-    line-height: 1.6;
+    max-width: 82%;
+    padding: 0.9rem 1.2rem;
+    border-radius: 14px;
+    font-size: 0.97rem;
+    line-height: 1.65;
   }
   .msg.bot {
     background: #f0ece4;
@@ -315,98 +488,130 @@
   }
   .msg-sender {
     font-size: 0.65rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.25rem;
-    font-weight: 600;
+    margin-bottom: 0.3rem;
+    font-weight: 700;
   }
-  .msg.user .msg-sender { color: rgba(245,240,232,0.5); }
+  .msg.user .msg-sender { color: rgba(245,240,232,0.45); }
 
-  .chat-input-row { display: flex; gap: 0.8rem; }
+  .chat-input-row { display: flex; gap: 0.9rem; }
   .chat-input-row input {
     flex: 1;
-    padding: 0.75rem 1rem;
+    padding: 0.9rem 1.2rem;
     border: 1.5px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     outline: none;
     background: white;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: var(--ink);
   }
-  .chat-input-row input:focus { border-color: var(--ember); }
+  .chat-input-row input:focus {
+    border-color: var(--ember);
+    box-shadow: 0 0 0 3px rgba(224,92,42,0.08);
+  }
 
   /* Logo image display */
   .logo-preview {
     display: none;
     text-align: center;
-    padding: 1.5rem;
+    padding: 2rem;
     background: white;
     border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-top: 1rem;
+    border-radius: 16px;
+    margin-top: 1.2rem;
+    box-shadow: 0 4px 30px rgba(10,10,15,0.06);
   }
   .logo-preview.show { display: block; }
   .logo-preview img {
     max-width: 100%;
-    max-height: 300px;
-    border-radius: 8px;
-    box-shadow: 0 8px 30px rgba(10,10,15,0.1);
+    max-height: 320px;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(10,10,15,0.12);
   }
 
   /* Color swatches */
-  .color-swatches { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1rem; }
+  .color-swatches { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
   .swatch {
-    width: 48px; height: 48px;
-    border-radius: 8px;
+    width: 56px; height: 56px;
+    border-radius: 10px;
     border: 1px solid var(--border);
     cursor: pointer;
     position: relative;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
-  .swatch:hover { transform: scale(1.1); }
+  .swatch:hover { transform: scale(1.12); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
   .swatch-tooltip {
     display: none;
     position: absolute;
-    bottom: 110%;
+    bottom: 115%;
     left: 50%; transform: translateX(-50%);
     background: var(--ink);
     color: var(--paper);
     font-size: 0.65rem;
-    padding: 0.3rem 0.5rem;
-    border-radius: 4px;
+    padding: 0.35rem 0.6rem;
+    border-radius: 5px;
     white-space: nowrap;
     font-family: 'JetBrains Mono', monospace;
   }
   .swatch:hover .swatch-tooltip { display: block; }
 
+  /* Copy btn */
+  .copy-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--muted);
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .copy-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* Suggestion chips */
+  .suggestion-chips { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1rem; }
+  .chip {
+    background: white;
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+    padding: 0.55rem 1rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .chip:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column; gap: 5px; cursor: pointer;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--ink); border-radius: 2px;
+    transition: all 0.3s;
+  }
+
   /* Responsive */
-  @media(max-width: 768px) {
+  @media(max-width: 900px) {
     .sidebar { transform: translateX(-100%); }
     .sidebar.open { transform: none; }
     .main { margin-left: 0; }
     .form-row { grid-template-columns: 1fr; }
     .hamburger { display: flex; }
+    .content { padding: 2rem 1.5rem; }
   }
-
-  .hamburger {
-    display: none;
-    flex-direction: column; gap: 4px; cursor: pointer;
-    padding: 4px;
-  }
-  .hamburger span {
-    display: block; width: 22px; height: 2px;
-    background: var(--ink); border-radius: 2px;
-  }
-
-  .copy-btn {
-    background: none; border: 1px solid var(--border);
-    padding: 0.3rem 0.7rem; border-radius: 5px;
-    font-size: 0.72rem; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    color: var(--muted); transition: all 0.2s;
-  }
-  .copy-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 </style>
 </head>
 <body>
@@ -414,33 +619,40 @@
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <a href="/" class="sidebar-logo">Biz<span>Forge</span></a>
+    <a href="index.html" class="sidebar-logo">In<span>Kraft</span></a>
     <div class="sidebar-tag">AI Branding Studio</div>
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-section-title">Generate</div>
+    <div class="nav-section-title" data-i18n="nav_generate">Generate</div>
     <div class="nav-item active" onclick="switchTab('brand', this)">
-      <span class="nav-icon">🏷️</span> Brand Names
+      <span class="nav-icon">🏷️</span> <span data-i18n="nav_brand">Brand Names</span>
     </div>
     <div class="nav-item" onclick="switchTab('logo', this)">
-      <span class="nav-icon">🎨</span> Logo Generator
+      <span class="nav-icon">🎨</span> <span data-i18n="nav_logo">Logo Generator</span>
     </div>
     <div class="nav-item" onclick="switchTab('content', this)">
-      <span class="nav-icon">✍️</span> Marketing Content
+      <span class="nav-icon">✍️</span> <span data-i18n="nav_content">Marketing Content</span>
     </div>
 
-    <div class="nav-section-title" style="margin-top:1rem">Analyse</div>
+    <div class="nav-section-title" style="margin-top:0.5rem" data-i18n="nav_analyse">Analyse</div>
     <div class="nav-item" onclick="switchTab('design', this)">
-      <span class="nav-icon">🎭</span> Design System
+      <span class="nav-icon">🎭</span> <span data-i18n="nav_design">Design System</span>
     </div>
     <div class="nav-item" onclick="switchTab('sentiment', this)">
-      <span class="nav-icon">📊</span> Sentiment Analyzer
+      <span class="nav-icon">📊</span> <span data-i18n="nav_sentiment">Sentiment Analyzer</span>
     </div>
+     <div class="nav-item" onclick="switchTab('usp', this)">
+        <span class="nav-icon">🎯</span> <span data-i18n="nav_usp">USP Identifier</span>
+      </div>
+      <div class="nav-item" onclick="switchTab('competitors', this)">
+        <span class="nav-icon">⚔️</span> <span data-i18n="nav_competitors">Competitor Analysis</span>
+      </div>
 
-    <div class="nav-section-title" style="margin-top:1rem">Consult</div>
+    <div class="nav-section-title" style="margin-top:0.5rem" data-i18n="nav_consult">Consult</div>
     <div class="nav-item" onclick="switchTab('chat', this)">
-      <span class="nav-icon">🤖</span> Branding Chat
+      <span class="nav-icon">🤖</span> <span data-i18n="nav_chat">Branding Chat</span>
     </div>
+    
   </nav>
   <div class="sidebar-footer">
     Powered by IBM Granite · Groq · SDXL
@@ -458,249 +670,605 @@
       <div class="topbar-title" id="topbar-title">Brand Names</div>
     </div>
     <div class="topbar-right">
-      <select class="lang-select" id="lang-select">
-        <option value="en">🌐 English</option>
-        <option value="es">🇪🇸 Español</option>
-        <option value="fr">🇫🇷 Français</option>
-        <option value="de">🇩🇪 Deutsch</option>
-        <option value="hi">🇮🇳 हिन्दी</option>
-      </select>
+      <!-- Custom Language Picker -->
+      <div class="lang-picker" id="lang-picker">
+        <div class="lang-trigger" id="lang-trigger" onclick="toggleLangDropdown()">
+          <span class="lang-flag" id="lang-flag">🌐</span>
+          <span class="lang-label" id="lang-label">English</span>
+          <span class="lang-caret">▼</span>
+        </div>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <div class="lang-option selected" data-value="en" data-flag="🌐" data-label="English" onclick="selectLang(this)">
+            <span class="opt-flag">🌐</span> English
+          </div>
+          <div class="lang-option" data-value="es" data-flag="🇪🇸" data-label="Español" onclick="selectLang(this)">
+            <span class="opt-flag">🇪🇸</span> Español
+          </div>
+          <div class="lang-option" data-value="fr" data-flag="🇫🇷" data-label="Français" onclick="selectLang(this)">
+            <span class="opt-flag">🇫🇷</span> Français
+          </div>
+          <div class="lang-option" data-value="de" data-flag="🇩🇪" data-label="Deutsch" onclick="selectLang(this)">
+            <span class="opt-flag">🇩🇪</span> Deutsch
+          </div>
+          <div class="lang-option" data-value="hi" data-flag="🇮🇳" data-label="हिन्दी" onclick="selectLang(this)">
+            <span class="opt-flag">🇮🇳</span> हिन्दी
+          </div>
+        </div>
+      </div>
+      <!-- Hidden input keeps getLang() working -->
+      <input type="hidden" id="lang-select" value="en">
       <div class="status-dot"><div class="dot"></div> AI Online</div>
     </div>
   </div>
 
   <!-- Content -->
   <div class="content">
+    <div class="content-inner">
 
-    <!-- ── BRAND NAMES ── -->
-    <div class="tab-panel active" id="tab-brand">
-      <div class="panel-header">
-        <h2>🏷️ Brand Name Generator</h2>
-        <p>Enter keywords and let AI generate creative, trademark-ready brand names.</p>
-      </div>
-      <div class="form-card">
-        <div class="form-group">
-          <label>Keywords / Describe Your Business</label>
-          <input type="text" id="brand-keywords" placeholder="e.g., smart, innovative, sustainable, fast">
+      <!-- ── BRAND NAMES ── -->
+      <div class="tab-panel active" id="tab-brand">
+        <div class="panel-header">
+          <span class="panel-icon">🏷️</span>
+          <h2 data-i18n="brand_title">Brand Name Generator</h2>
+          <p data-i18n="brand_desc">Enter keywords and let AI generate creative, trademark-ready brand names.</p>
         </div>
-        <div class="form-row">
+        <div class="form-card">
           <div class="form-group">
-            <label>Industry</label>
-            <select id="brand-industry">
-              <option>Technology</option><option>Healthcare</option><option>Fashion</option>
-              <option>Food & Beverage</option><option>Finance</option><option>Education</option>
-              <option>E-commerce</option><option>Travel</option><option>Real Estate</option><option>Other</option>
-            </select>
+            <label data-i18n="brand_label_keywords">Keywords / Describe Your Business</label>
+            <input type="text" id="brand-keywords" data-i18n-placeholder="brand_placeholder_keywords" placeholder="e.g., smart, innovative, sustainable, fast">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label_industry">Industry</label>
+              <select id="brand-industry">
+                <option data-i18n="opt_tech">Technology</option><option data-i18n="opt_health">Healthcare</option><option data-i18n="opt_fashion">Fashion</option>
+                <option data-i18n="opt_food">Food & Beverage</option><option data-i18n="opt_finance">Finance</option><option data-i18n="opt_edu">Education</option>
+                <option data-i18n="opt_ecom">E-commerce</option><option data-i18n="opt_travel">Travel</option><option data-i18n="opt_realestate">Real Estate</option><option data-i18n="opt_other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="label_tone">Brand Tone</label>
+              <select id="brand-tone">
+                <option data-i18n="tone_pro">Professional</option><option data-i18n="tone_play">Playful</option><option data-i18n="tone_lux">Luxury</option>
+                <option data-i18n="tone_min">Minimal</option><option data-i18n="tone_bold">Bold</option><option data-i18n="tone_friend">Friendly</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="generateBrandNames()" data-i18n="brand_btn">✦ Generate Brand Names</button>
+        </div>
+        <div class="loading" id="brand-loading"><div class="spinner"></div> <span data-i18n="loading_brand">Generating names...</span></div>
+        <div class="result-card" id="brand-result">
+          <div class="result-label">✦ <span data-i18n="result_brand">Generated Names</span> <button class="copy-btn" onclick="copyResult('brand-result-content')" data-i18n="btn_copy">Copy</button></div>
+          <div class="result-content" id="brand-result-content"></div>
+        </div>
+      </div>
+
+      <!-- ── LOGO ── -->
+      <div class="tab-panel" id="tab-logo">
+        <div class="panel-header">
+          <span class="panel-icon">🎨</span>
+          <h2 data-i18n="logo_title">Logo Generator</h2>
+          <p data-i18n="logo_desc">Generate AI-crafted logo concepts and SDXL-powered logo images.</p>
+        </div>
+        <div class="form-card">
+          <div class="form-group">
+            <label data-i18n="logo_label_name">Brand Name</label>
+            <input type="text" id="logo-name" data-i18n-placeholder="logo_placeholder_name" placeholder="e.g., NovaSpark">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label_industry">Industry</label>
+              <select id="logo-industry">
+                <option data-i18n="opt_tech">Technology</option><option data-i18n="opt_health">Healthcare</option><option data-i18n="opt_fashion">Fashion</option>
+                <option data-i18n="opt_food">Food & Beverage</option><option data-i18n="opt_finance">Finance</option><option data-i18n="opt_edu">Education</option>
+                <option data-i18n="opt_other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="logo_label_visual">Visual Keywords</label>
+              <input type="text" id="logo-keywords" data-i18n-placeholder="logo_placeholder_visual" placeholder="e.g., modern, minimal, geometric">
+            </div>
+          </div>
+          <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
+            <button class="btn btn-gold" onclick="generateLogoPrompt()" data-i18n="logo_btn_concept">✦ Generate Logo Concept</button>
+            <button class="btn btn-primary" onclick="generateLogoImage()" id="gen-img-btn" style="display:none" data-i18n="logo_btn_image">🖼️ Generate Image (SDXL)</button>
+          </div>
+        </div>
+        <div class="loading" id="logo-loading"><div class="spinner"></div> <span data-i18n="loading_logo">Generating logo concept...</span></div>
+        <div class="result-card gold-accent" id="logo-result">
+          <div class="result-label">✦ <span data-i18n="result_logo">Logo Concept</span> <button class="copy-btn" onclick="copyResult('logo-result-content')" data-i18n="btn_copy">Copy</button></div>
+          <div class="result-content" id="logo-result-content"></div>
+        </div>
+        <div class="logo-preview" id="logo-img-preview">
+          <div class="result-label" style="justify-content:center;margin-bottom:1.2rem">✦ <span data-i18n="result_logo_img">Generated Logo</span></div>
+          <img id="logo-img" src="" alt="Generated Logo">
+          <p style="margin-top:1rem;font-size:0.85rem;color:var(--muted)" data-i18n="logo_save_hint">Right-click to save your logo</p>
+        </div>
+      </div>
+
+      <!-- ── CONTENT ── -->
+      <div class="tab-panel" id="tab-content">
+        <div class="panel-header">
+          <span class="panel-icon">✍️</span>
+          <h2 data-i18n="content_title">Marketing Content</h2>
+          <p data-i18n="content_desc">Generate product descriptions, social posts, ad copy, emails, and taglines.</p>
+        </div>
+        <div class="form-card">
+          <div class="form-group">
+            <label data-i18n="content_label_desc">Brand Description</label>
+            <textarea id="content-desc" data-i18n-placeholder="content_placeholder" placeholder="Describe your brand, product, or service..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="content_label_type">Content Type</label>
+              <select id="content-type">
+                <option value="product_description" data-i18n="ctype_product">Product Description</option>
+                <option value="social_post" data-i18n="ctype_social">Social Media Post</option>
+                <option value="email" data-i18n="ctype_email">Marketing Email</option>
+                <option value="ad_copy" data-i18n="ctype_ad">Ad Copy</option>
+                <option value="tagline" data-i18n="ctype_tagline">Taglines & Slogans</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="label_tone">Tone</label>
+              <select id="content-tone">
+                <option data-i18n="tone_pro">Professional</option><option data-i18n="tone_play">Playful</option><option data-i18n="tone_lux">Luxury</option>
+                <option data-i18n="tone_casual">Casual</option><option data-i18n="tone_insp">Inspirational</option><option data-i18n="tone_bold">Bold</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-teal" onclick="generateContent()" data-i18n="content_btn">✦ Generate Content</button>
+        </div>
+        <div class="loading" id="content-loading"><div class="spinner"></div> <span data-i18n="loading_content">Writing copy...</span></div>
+        <div class="result-card teal-accent" id="content-result">
+          <div class="result-label">✦ <span data-i18n="result_content">Generated Content</span> <button class="copy-btn" onclick="copyResult('content-result-content')" data-i18n="btn_copy">Copy</button></div>
+          <div class="result-content" id="content-result-content"></div>
+        </div>
+      </div>
+
+      <!-- ── DESIGN SYSTEM ── -->
+      <div class="tab-panel" id="tab-design">
+        <div class="panel-header">
+          <span class="panel-icon">🎭</span>
+          <h2 data-i18n="design_title">Design System</h2>
+          <p data-i18n="design_desc">Get AI-generated color palettes, typography, and visual identity recommendations.</p>
+        </div>
+        <div class="form-card">
+          <div class="form-row">
+            <div class="form-group">
+              <label data-i18n="label_tone">Brand Tone</label>
+              <select id="design-tone">
+                <option data-i18n="tone_pro">Professional</option><option data-i18n="tone_play">Playful</option><option data-i18n="tone_lux">Luxury</option>
+                <option data-i18n="tone_min">Minimal</option><option data-i18n="tone_bold">Bold</option><option data-i18n="tone_elegant">Elegant</option>
+                <option data-i18n="tone_energetic">Energetic</option><option data-i18n="tone_calm">Calm & Trust</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="label_industry">Industry</label>
+              <select id="design-industry">
+                <option data-i18n="opt_tech">Technology</option><option data-i18n="opt_health">Healthcare</option><option data-i18n="opt_fashion">Fashion</option>
+                <option data-i18n="opt_food">Food & Beverage</option><option data-i18n="opt_finance">Finance</option><option data-i18n="opt_edu">Education</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-violet" onclick="getDesignSystem()" data-i18n="design_btn">✦ Get Design System</button>
+        </div>
+        <div class="loading" id="design-loading"><div class="spinner"></div> <span data-i18n="loading_design">Building palette...</span></div>
+        <div class="result-card violet-accent" id="design-result">
+          <div class="result-label">✦ <span data-i18n="result_design">Brand Design System</span> <button class="copy-btn" onclick="copyResult('design-result-content')" data-i18n="btn_copy">Copy</button></div>
+          <div class="color-swatches" id="color-swatches"></div>
+          <div class="result-content" id="design-result-content" style="margin-top:1.2rem"></div>
+        </div>
+      </div>
+
+      <!-- ── SENTIMENT ── -->
+      <div class="tab-panel" id="tab-sentiment">
+        <div class="panel-header">
+          <span class="panel-icon">📊</span>
+          <h2 data-i18n="sentiment_title">Sentiment Analyzer</h2>
+          <p data-i18n="sentiment_desc">Analyze customer reviews and get professional rewrites with tone insights.</p>
+        </div>
+        <div class="form-card">
+          <div class="form-group">
+            <label data-i18n="sentiment_label_review">Customer Review / Text</label>
+            <textarea id="sentiment-text" data-i18n-placeholder="sentiment_placeholder" placeholder="Paste a customer review here..." style="min-height:130px"></textarea>
           </div>
           <div class="form-group">
-            <label>Brand Tone</label>
-            <select id="brand-tone">
-              <option>Professional</option><option>Playful</option><option>Luxury</option>
-              <option>Minimal</option><option>Bold</option><option>Friendly</option>
+            <label data-i18n="sentiment_label_tone">Target Brand Tone (for alignment check)</label>
+            <select id="sentiment-tone">
+              <option data-i18n="tone_pro">Professional</option><option data-i18n="tone_friend">Friendly</option><option data-i18n="tone_lux">Luxury</option>
+              <option data-i18n="tone_play">Playful</option><option data-i18n="tone_min">Minimal</option>
             </select>
           </div>
+          <button class="btn btn-primary" onclick="analyzeSentiment()" data-i18n="sentiment_btn">✦ Analyze & Rewrite</button>
         </div>
-        <button class="btn btn-primary" onclick="generateBrandNames()">✦ Generate Brand Names</button>
+        <div class="loading" id="sentiment-loading"><div class="spinner"></div> <span data-i18n="loading_sentiment">Analyzing sentiment...</span></div>
+        <div class="result-card" id="sentiment-result">
+          <div class="result-label">✦ <span data-i18n="result_sentiment">Sentiment Analysis</span> <button class="copy-btn" onclick="copyResult('sentiment-result-content')" data-i18n="btn_copy">Copy</button></div>
+          <div class="result-content" id="sentiment-result-content"></div>
+        </div>
       </div>
-      <div class="loading" id="brand-loading"><div class="spinner"></div> Generating names...</div>
-      <div class="result-card" id="brand-result">
-        <div class="result-label">✦ Generated Names <button class="copy-btn" onclick="copyResult('brand-result-content')">Copy</button></div>
-        <div class="result-content" id="brand-result-content"></div>
+      <div class="tab-panel" id="tab-usp">
+  <div class="panel-header">
+    <span class="panel-icon">🎯</span>
+    <h2>USP Identifier</h2>
+    <p>Discover the unique value proposition that sets your brand apart from the noise.</p>
+  </div>
+  <div class="form-card">
+    <div class="form-group">
+      <label>Detailed Business Description</label>
+      <textarea id="usp-desc" placeholder="Describe your product, your target audience, and the problem you solve..."></textarea>
+    </div>
+    <button class="btn btn-gold" onclick="generateUSP()">✦ Generate My USP</button>
+  </div>
+  <div class="loading" id="usp-loading"><div class="spinner"></div> <span>Analyzing market edge...</span></div>
+  <div class="result-card gold-accent" id="usp-result">
+    <div class="result-label">✦ Your Unique Selling Proposition <button class="copy-btn" onclick="copyResult('usp-result-content')">Copy</button></div>
+    <div class="result-content" id="usp-result-content"></div>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-competitors">
+  <div class="panel-header">
+    <span class="panel-icon">⚔️</span>
+    <h2>Competitor Analysis</h2>
+    <p>Compare your brand against rivals to find gaps, opportunities, and strategic improvements.</p>
+  </div>
+  <div class="form-card">
+    <div class="form-row">
+       <div class="form-group">
+        <label>Your Brand Name</label>
+        <input type="text" id="comp-brand-name" placeholder="e.g., BizForge">
+      </div>
+      <div class="form-group">
+        <label>Industry</label>
+        <input type="text" id="comp-industry" placeholder="e.g., SaaS, Retail">
       </div>
     </div>
-
-    <!-- ── LOGO ── -->
-    <div class="tab-panel" id="tab-logo">
-      <div class="panel-header">
-        <h2>🎨 Logo Generator</h2>
-        <p>Generate AI-crafted logo concepts and SDXL-powered logo images.</p>
-      </div>
-      <div class="form-card">
-        <div class="form-group">
-          <label>Brand Name</label>
-          <input type="text" id="logo-name" placeholder="e.g., NovaSpark">
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Industry</label>
-            <select id="logo-industry">
-              <option>Technology</option><option>Healthcare</option><option>Fashion</option>
-              <option>Food & Beverage</option><option>Finance</option><option>Education</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Visual Keywords</label>
-            <input type="text" id="logo-keywords" placeholder="e.g., modern, minimal, geometric">
-          </div>
-        </div>
-        <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
-          <button class="btn btn-gold" onclick="generateLogoPrompt()">✦ Generate Logo Concept</button>
-          <button class="btn btn-primary" onclick="generateLogoImage()" id="gen-img-btn" style="display:none">🖼️ Generate Image (SDXL)</button>
-        </div>
-      </div>
-      <div class="loading" id="logo-loading"><div class="spinner"></div> Generating logo concept...</div>
-      <div class="result-card gold-accent" id="logo-result">
-        <div class="result-label">✦ Logo Concept <button class="copy-btn" onclick="copyResult('logo-result-content')">Copy</button></div>
-        <div class="result-content" id="logo-result-content"></div>
-      </div>
-      <div class="logo-preview" id="logo-img-preview">
-        <div class="result-label" style="justify-content:center;margin-bottom:1rem">✦ Generated Logo</div>
-        <img id="logo-img" src="" alt="Generated Logo">
-        <p style="margin-top:0.8rem;font-size:0.8rem;color:var(--muted)">Right-click to save your logo</p>
-      </div>
+    <div class="form-group">
+      <label>Main Competitors</label>
+      <textarea id="comp-list" placeholder="List 2-3 competitors and what they do..."></textarea>
     </div>
+    <button class="btn btn-primary" onclick="generateCompetitorAnalysis()">✦ Run Comparison</button>
+  </div>
+  <div class="loading" id="comp-loading"><div class="spinner"></div> <span>Strategizing...</span></div>
+  <div class="result-card" id="comp-result">
+    <div class="result-label">✦ Strategic Analysis <button class="copy-btn" onclick="copyResult('comp-result-content')">Copy</button></div>
+    <div class="result-content" id="comp-result-content"></div>
+    </div>
+   </div>
 
-    <!-- ── CONTENT ── -->
-    <div class="tab-panel" id="tab-content">
-      <div class="panel-header">
-        <h2>✍️ Marketing Content</h2>
-        <p>Generate product descriptions, social posts, ad copy, emails, and taglines.</p>
-      </div>
-      <div class="form-card">
-        <div class="form-group">
-          <label>Brand Description</label>
-          <textarea id="content-desc" placeholder="Describe your brand, product, or service..."></textarea>
+      <!-- ── CHAT ── -->
+      <div class="tab-panel" id="tab-chat">
+        <div class="panel-header">
+          <span class="panel-icon">🤖</span>
+          <h2 data-i18n="chat_title">Branding Chat</h2>
+          <p data-i18n="chat_desc">Ask anything about branding strategy, naming, logos, and more.</p>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Content Type</label>
-            <select id="content-type">
-              <option value="product_description">Product Description</option>
-              <option value="social_post">Social Media Post</option>
-              <option value="email">Marketing Email</option>
-              <option value="ad_copy">Ad Copy</option>
-              <option value="tagline">Taglines & Slogans</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Tone</label>
-            <select id="content-tone">
-              <option>Professional</option><option>Playful</option><option>Luxury</option>
-              <option>Casual</option><option>Inspirational</option><option>Bold</option>
-            </select>
+        <div class="chat-window" id="chat-window">
+          <div class="msg bot">
+            <div class="msg-sender">InKraft AI</div>
+            <span data-i18n="chat_welcome">Hi! I'm your AI branding consultant powered by IBM Granite. Ask me anything — brand strategy, naming, logo ideas, marketing copy, or color theory. I'm here to help! 🚀</span>
           </div>
         </div>
-        <button class="btn btn-teal" onclick="generateContent()">✦ Generate Content</button>
-      </div>
-      <div class="loading" id="content-loading"><div class="spinner"></div> Writing copy...</div>
-      <div class="result-card teal-accent" id="content-result">
-        <div class="result-label">✦ Generated Content <button class="copy-btn" onclick="copyResult('content-result-content')">Copy</button></div>
-        <div class="result-content" id="content-result-content"></div>
-      </div>
-    </div>
-
-    <!-- ── DESIGN SYSTEM ── -->
-    <div class="tab-panel" id="tab-design">
-      <div class="panel-header">
-        <h2>🎭 Design System</h2>
-        <p>Get AI-generated color palettes, typography, and visual identity recommendations.</p>
-      </div>
-      <div class="form-card">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Brand Tone</label>
-            <select id="design-tone">
-              <option>Professional</option><option>Playful</option><option>Luxury</option>
-              <option>Minimal</option><option>Bold</option><option>Elegant</option>
-              <option>Energetic</option><option>Calm & Trust</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Industry</label>
-            <select id="design-industry">
-              <option>Technology</option><option>Healthcare</option><option>Fashion</option>
-              <option>Food & Beverage</option><option>Finance</option><option>Education</option>
-            </select>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" data-i18n-placeholder="chat_placeholder" placeholder="Ask about branding..." onkeydown="if(event.key==='Enter') sendChat()">
+          <button class="btn btn-dark" onclick="sendChat()" data-i18n="chat_send">Send →</button>
+        </div>
+        <div style="margin-top:1.5rem">
+          <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.8rem;font-weight:500" data-i18n="chat_try">💡 Try asking:</p>
+          <div class="suggestion-chips">
+            <button class="chip" onclick="askSuggestion(this)" data-i18n="chip1">What makes a great brand name?</button>
+            <button class="chip" onclick="askSuggestion(this)" data-i18n="chip2">How do I choose brand colors?</button>
+            <button class="chip" onclick="askSuggestion(this)" data-i18n="chip3">Tips for startup branding on a budget?</button>
           </div>
         </div>
-        <button class="btn btn-violet" onclick="getDesignSystem()">✦ Get Design System</button>
-      </div>
-      <div class="loading" id="design-loading"><div class="spinner"></div> Building palette...</div>
-      <div class="result-card violet-accent" id="design-result">
-        <div class="result-label">✦ Brand Design System <button class="copy-btn" onclick="copyResult('design-result-content')">Copy</button></div>
-        <div class="color-swatches" id="color-swatches"></div>
-        <div class="result-content" id="design-result-content" style="margin-top:1rem"></div>
-      </div>
-    </div>
-
-    <!-- ── SENTIMENT ── -->
-    <div class="tab-panel" id="tab-sentiment">
-      <div class="panel-header">
-        <h2>📊 Sentiment Analyzer</h2>
-        <p>Analyze customer reviews and get professional rewrites with tone insights.</p>
-      </div>
-      <div class="form-card">
-        <div class="form-group">
-          <label>Customer Review / Text</label>
-          <textarea id="sentiment-text" placeholder="Paste a customer review here..." style="min-height:120px"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Target Brand Tone (for alignment check)</label>
-          <select id="sentiment-tone">
-            <option>Professional</option><option>Friendly</option><option>Luxury</option>
-            <option>Playful</option><option>Minimal</option>
-          </select>
-        </div>
-        <button class="btn btn-primary" onclick="analyzeSentiment()">✦ Analyze & Rewrite</button>
-      </div>
-      <div class="loading" id="sentiment-loading"><div class="spinner"></div> Analyzing sentiment...</div>
-      <div class="result-card" id="sentiment-result">
-        <div class="result-label">✦ Sentiment Analysis <button class="copy-btn" onclick="copyResult('sentiment-result-content')">Copy</button></div>
-        <div class="result-content" id="sentiment-result-content"></div>
-      </div>
-    </div>
-
-    <!-- ── CHAT ── -->
-    <div class="tab-panel" id="tab-chat">
-      <div class="panel-header">
-        <h2>🤖 Branding Chat</h2>
-        <p>Ask anything about branding strategy, naming, logos, and more.</p>
-      </div>
-      <div class="chat-window" id="chat-window">
-        <div class="msg bot">
-          <div class="msg-sender">BizForge AI</div>
-          Hi! I'm your AI branding consultant powered by IBM Granite. Ask me anything — brand strategy, naming, logo ideas, marketing copy, or color theory. I'm here to help! 🚀
-        </div>
-      </div>
-      <div class="chat-input-row">
-        <input type="text" id="chat-input" placeholder="Ask about branding..." onkeydown="if(event.key==='Enter') sendChat()">
-        <button class="btn btn-dark" onclick="sendChat()">Send →</button>
       </div>
 
-      <div style="margin-top:1.5rem">
-        <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.8rem">💡 Try asking:</p>
-        <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
-          <button class="btn btn-sm" style="background:#f0ece4;color:var(--ink);border:1px solid var(--border)" onclick="askSuggestion(this)">What makes a great brand name?</button>
-          <button class="btn btn-sm" style="background:#f0ece4;color:var(--ink);border:1px solid var(--border)" onclick="askSuggestion(this)">How do I choose brand colors?</button>
-          <button class="btn btn-sm" style="background:#f0ece4;color:var(--ink);border:1px solid var(--border)" onclick="askSuggestion(this)">Tips for startup branding on a budget?</button>
-        </div>
-      </div>
-    </div>
-
+    </div><!-- /content-inner -->
   </div><!-- /content -->
 </div><!-- /main -->
 
 <script>
-const API = '';  // Empty = same origin (FastAPI backend)
+const API = 'http://localhost:8000';
 
-// ── Tab switching ────────────────────────────────────────────────────────────
+// ── i18n Translations ────────────────────────────────────────────────────────
+const translations = {
+  en: {
+    nav_generate: 'Generate', nav_brand: 'Brand Names', nav_logo: 'Logo Generator',
+    nav_content: 'Marketing Content', nav_analyse: 'Analyse', nav_design: 'Design System',
+    nav_sentiment: 'Sentiment Analyzer', nav_consult: 'Consult', nav_chat: 'Branding Chat',
+    nav_usp:"USP Generator", nav_competitors:"Competitor Analysis",
+    brand_title: 'Brand Name Generator', 
+    brand_desc: 'Enter keywords and let AI generate creative, trademark-ready brand names.',
+    brand_label_keywords: 'Keywords / Describe Your Business',
+    brand_placeholder_keywords: 'e.g., smart, innovative, sustainable, fast',
+    brand_btn: '✦ Generate Brand Names', loading_brand: 'Generating names...', result_brand: 'Generated Names',
+    logo_title: 'Logo Generator', logo_desc: 'Generate AI-crafted logo concepts and SDXL-powered logo images.',
+    logo_label_name: 'Brand Name', logo_placeholder_name: 'e.g., NovaSpark',
+    logo_label_visual: 'Visual Keywords', logo_placeholder_visual: 'e.g., modern, minimal, geometric',
+    logo_btn_concept: '✦ Generate Logo Concept', logo_btn_image: '🖼️ Generate Image (SDXL)',
+    loading_logo: 'Generating logo concept...', result_logo: 'Logo Concept',
+    result_logo_img: 'Generated Logo', logo_save_hint: 'Right-click to save your logo',
+    content_title: 'Marketing Content',
+    content_desc: 'Generate product descriptions, social posts, ad copy, emails, and taglines.',
+    content_label_desc: 'Brand Description', content_placeholder: 'Describe your brand, product, or service...',
+    content_label_type: 'Content Type', content_btn: '✦ Generate Content',
+    loading_content: 'Writing copy...', result_content: 'Generated Content',
+    design_title: 'Design System',
+    design_desc: 'Get AI-generated color palettes, typography, and visual identity recommendations.',
+    design_btn: '✦ Get Design System', loading_design: 'Building palette...', result_design: 'Brand Design System',
+    sentiment_title: 'Sentiment Analyzer',
+    sentiment_desc: 'Analyze customer reviews and get professional rewrites with tone insights.',
+    sentiment_label_review: 'Customer Review / Text', sentiment_placeholder: 'Paste a customer review here...',
+    sentiment_label_tone: 'Target Brand Tone (for alignment check)',
+    sentiment_btn: '✦ Analyze & Rewrite', loading_sentiment: 'Analyzing sentiment...', result_sentiment: 'Sentiment Analysis',
+    chat_title: 'Branding Chat', chat_desc: 'Ask anything about branding strategy, naming, logos, and more.',
+    chat_welcome: "Hi! I'm your AI branding consultant powered by IBM Granite. Ask me anything — brand strategy, naming, logo ideas, marketing copy, or color theory. I'm here to help! 🚀",
+    chat_placeholder: 'Ask about branding...', chat_send: 'Send →', chat_try: '💡 Try asking:',
+    chip1: 'What makes a great brand name?', chip2: 'How do I choose brand colors?',
+    chip3: 'Tips for startup branding on a budget?',
+    label_industry: 'Industry', label_tone: 'Brand Tone', btn_copy: 'Copy',
+    opt_tech: 'Technology', opt_health: 'Healthcare', opt_fashion: 'Fashion',
+    opt_food: 'Food & Beverage', opt_finance: 'Finance', opt_edu: 'Education',
+    opt_ecom: 'E-commerce', opt_travel: 'Travel', opt_realestate: 'Real Estate', opt_other: 'Other',
+    tone_pro: 'Professional', tone_play: 'Playful', tone_lux: 'Luxury', tone_min: 'Minimal',
+    tone_bold: 'Bold', tone_friend: 'Friendly', tone_casual: 'Casual', tone_insp: 'Inspirational',
+    tone_elegant: 'Elegant', tone_energetic: 'Energetic', tone_calm: 'Calm & Trust',
+    ctype_product: 'Product Description', ctype_social: 'Social Media Post',
+    ctype_email: 'Marketing Email', ctype_ad: 'Ad Copy', ctype_tagline: 'Taglines & Slogans',
+    tab_titles: { brand: 'Brand Names', logo: 'Logo Generator', content: 'Marketing Content', design: 'Design System', sentiment: 'Sentiment Analyzer', usp:'Unique Selling Proposition', competitors:'Competitor Analysis', chat: 'Branding Chat' }
+  },
+  hi: {
+    nav_generate: 'बनाएं', nav_brand: 'ब्रांड नाम', nav_logo: 'लोगो जनरेटर',
+    nav_content: 'मार्केटिंग सामग्री', nav_analyse: 'विश्लेषण', nav_design: 'डिज़ाइन सिस्टम',
+    nav_sentiment: 'भावना विश्लेषक', nav_consult: 'सलाह', nav_chat: 'ब्रांडिंग चैट',
+    nav_usp: 'अद्वितीय बिक्री के प्रतिष्ठान', nav_competitors: 'प्रतिद्वंद्वी विश्लेषण',
+    brand_title: 'ब्रांड नाम जनरेटर',
+    brand_desc: 'कीवर्ड दर्ज करें और AI को रचनात्मक, ट्रेडमार्क-योग्य ब्रांड नाम बनाने दें।',
+    brand_label_keywords: 'कीवर्ड / अपने व्यवसाय का वर्णन करें',
+    brand_placeholder_keywords: 'जैसे, स्मार्ट, अभिनव, टिकाऊ, तेज़',
+    brand_btn: '✦ ब्रांड नाम बनाएं', loading_brand: 'नाम बनाए जा रहे हैं...', result_brand: 'उत्पन्न नाम',
+    logo_title: 'लोगो जनरेटर', logo_desc: 'AI से लोगो अवधारणाएं और SDXL-संचालित लोगो छवियां बनाएं।',
+    logo_label_name: 'ब्रांड का नाम', logo_placeholder_name: 'जैसे, NovaSpark',
+    logo_label_visual: 'विज़ुअल कीवर्ड', logo_placeholder_visual: 'जैसे, आधुनिक, न्यूनतम, ज्यामितीय',
+    logo_btn_concept: '✦ लोगो अवधारणा बनाएं', logo_btn_image: '🖼️ छवि बनाएं (SDXL)',
+    loading_logo: 'लोगो अवधारणा बनाई जा रही है...', result_logo: 'लोगो अवधारणा',
+    result_logo_img: 'उत्पन्न लोगो', logo_save_hint: 'अपना लोगो सहेजने के लिए राइट-क्लिक करें',
+    content_title: 'मार्केटिंग सामग्री',
+    content_desc: 'उत्पाद विवरण, सोशल पोस्ट, विज्ञापन कॉपी, ईमेल और टैगलाइन बनाएं।',
+    content_label_desc: 'ब्रांड विवरण', content_placeholder: 'अपने ब्रांड, उत्पाद या सेवा का वर्णन करें...',
+    content_label_type: 'सामग्री का प्रकार', content_btn: '✦ सामग्री बनाएं',
+    loading_content: 'कॉपी लिखी जा रही है...', result_content: 'उत्पन्न सामग्री',
+    design_title: 'डिज़ाइन सिस्टम',
+    design_desc: 'AI-निर्मित रंग पैलेट, टाइपोग्राफी और विज़ुअल पहचान सुझाव पाएं।',
+    design_btn: '✦ डिज़ाइन सिस्टम पाएं', loading_design: 'पैलेट बनाया जा रहा है...', result_design: 'ब्रांड डिज़ाइन सिस्टम',
+    sentiment_title: 'भावना विश्लेषक',
+    sentiment_desc: 'ग्राहक समीक्षाओं का विश्लेषण करें और पेशेवर पुनर्लेखन पाएं।',
+    sentiment_label_review: 'ग्राहक समीक्षा / पाठ', sentiment_placeholder: 'यहाँ ग्राहक समीक्षा चिपकाएं...',
+    sentiment_label_tone: 'लक्षित ब्रांड टोन (संरेखण जांच के लिए)',
+    sentiment_btn: '✦ विश्लेषण करें और पुनर्लिखें', loading_sentiment: 'भावना विश्लेषण हो रहा है...', result_sentiment: 'भावना विश्लेषण',
+    chat_title: 'ब्रांडिंग चैट', chat_desc: 'ब्रांडिंग रणनीति, नामकरण, लोगो आदि के बारे में कुछ भी पूछें।',
+    chat_welcome: 'नमस्ते! मैं IBM Granite द्वारा संचालित आपका AI ब्रांडिंग सलाहकार हूं। ब्रांड रणनीति, नामकरण, लोगो विचार, मार्केटिंग कॉपी या रंग सिद्धांत - कुछ भी पूछें। मैं यहां हूं! 🚀',
+    chat_placeholder: 'ब्रांडिंग के बारे में पूछें...', chat_send: 'भेजें →', chat_try: '💡 ये पूछें:',
+    chip1: 'एक अच्छा ब्रांड नाम क्या बनाता है?', chip2: 'ब्रांड रंग कैसे चुनें?',
+    chip3: 'कम बजट में स्टार्टअप ब्रांडिंग के टिप्स?',
+    label_industry: 'उद्योग', label_tone: 'ब्रांड टोन', btn_copy: 'कॉपी करें',
+    opt_tech: 'प्रौद्योगिकी', opt_health: 'स्वास्थ्य सेवा', opt_fashion: 'फैशन',
+    opt_food: 'खाद्य और पेय', opt_finance: 'वित्त', opt_edu: 'शिक्षा',
+    opt_ecom: 'ई-कॉमर्स', opt_travel: 'यात्रा', opt_realestate: 'रियल एस्टेट', opt_other: 'अन्य',
+    tone_pro: 'पेशेवर', tone_play: 'चंचल', tone_lux: 'विलासी', tone_min: 'न्यूनतम',
+    tone_bold: 'साहसी', tone_friend: 'मित्रवत', tone_casual: 'आकस्मिक', tone_insp: 'प्रेरणादायक',
+    tone_elegant: 'सुरुचिपूर्ण', tone_energetic: 'ऊर्जावान', tone_calm: 'शांत और भरोसेमंद',
+    ctype_product: 'उत्पाद विवरण', ctype_social: 'सोशल मीडिया पोस्ट',
+    ctype_email: 'मार्केटिंग ईमेल', ctype_ad: 'विज्ञापन कॉपी', ctype_tagline: 'टैगलाइन और नारे',
+    tab_titles: { brand: 'ब्रांड नाम', logo: 'लोगो जनरेटर', content: 'मार्केटिंग सामग्री', design: 'डिज़ाइन सिस्टम', sentiment: 'भावना विश्लेषक',usp:'अद्वितीय बिक्री के प्रतिष्ठान', competitors:'प्रतिद्वंद्वी विश्लेषण', chat: 'ब्रांडिंग चैट' }
+  },
+  es: {
+    nav_generate: 'Generar', nav_brand: 'Nombres de Marca', nav_logo: 'Generador de Logo',
+    nav_content: 'Contenido de Marketing', nav_analyse: 'Analizar', nav_design: 'Sistema de Diseño',
+    nav_sentiment: 'Analizador de Sentimiento', nav_consult: 'Consultar', nav_chat: 'Chat de Marca',
+    nav_usp: 'Generador de USP', nav_competitors: 'Análisis de Competidores',
+    brand_title: 'Generador de Nombres de Marca',
+    brand_desc: 'Ingresa palabras clave y deja que la IA genere nombres creativos y registrables.',
+    brand_label_keywords: 'Palabras Clave / Describe Tu Negocio',
+    brand_placeholder_keywords: 'ej., inteligente, innovador, sostenible, rápido',
+    brand_btn: '✦ Generar Nombres de Marca', loading_brand: 'Generando nombres...', result_brand: 'Nombres Generados',
+    logo_title: 'Generador de Logo', logo_desc: 'Genera conceptos de logo con IA e imágenes con SDXL.',
+    logo_label_name: 'Nombre de Marca', logo_placeholder_name: 'ej., NovaSpark',
+    logo_label_visual: 'Palabras Clave Visuales', logo_placeholder_visual: 'ej., moderno, minimal, geométrico',
+    logo_btn_concept: '✦ Generar Concepto de Logo', logo_btn_image: '🖼️ Generar Imagen (SDXL)',
+    loading_logo: 'Generando concepto de logo...', result_logo: 'Concepto de Logo',
+    result_logo_img: 'Logo Generado', logo_save_hint: 'Clic derecho para guardar tu logo',
+    content_title: 'Contenido de Marketing',
+    content_desc: 'Genera descripciones, publicaciones, copias publicitarias, emails y eslóganes.',
+    content_label_desc: 'Descripción de Marca', content_placeholder: 'Describe tu marca, producto o servicio...',
+    content_label_type: 'Tipo de Contenido', content_btn: '✦ Generar Contenido',
+    loading_content: 'Escribiendo copia...', result_content: 'Contenido Generado',
+    design_title: 'Sistema de Diseño', design_desc: 'Obtén paletas de colores, tipografía e identidad visual generadas por IA.',
+    design_btn: '✦ Obtener Sistema de Diseño', loading_design: 'Construyendo paleta...', result_design: 'Sistema de Diseño de Marca',
+    sentiment_title: 'Analizador de Sentimiento', sentiment_desc: 'Analiza reseñas de clientes y obtén reescrituras profesionales.',
+    sentiment_label_review: 'Reseña del Cliente / Texto', sentiment_placeholder: 'Pega una reseña aquí...',
+    sentiment_label_tone: 'Tono de Marca Objetivo', sentiment_btn: '✦ Analizar y Reescribir',
+    loading_sentiment: 'Analizando sentimiento...', result_sentiment: 'Análisis de Sentimiento',
+    chat_title: 'Chat de Marca', chat_desc: 'Pregunta sobre estrategia de marca, nombres, logos y más.',
+    chat_welcome: '¡Hola! Soy tu consultor de marca AI con IBM Granite. Pregúntame sobre estrategia, nombres, logos o teoría del color. ¡Aquí estoy! 🚀',
+    chat_placeholder: 'Pregunta sobre branding...', chat_send: 'Enviar →', chat_try: '💡 Prueba preguntar:',
+    chip1: '¿Qué hace un gran nombre de marca?', chip2: '¿Cómo elijo colores de marca?',
+    chip3: '¿Consejos para branding de startups con poco presupuesto?',
+    label_industry: 'Industria', label_tone: 'Tono de Marca', btn_copy: 'Copiar',
+    opt_tech: 'Tecnología', opt_health: 'Salud', opt_fashion: 'Moda',
+    opt_food: 'Alimentos y Bebidas', opt_finance: 'Finanzas', opt_edu: 'Educación',
+    opt_ecom: 'Comercio Electrónico', opt_travel: 'Viajes', opt_realestate: 'Inmobiliaria', opt_other: 'Otro',
+    tone_pro: 'Profesional', tone_play: 'Juguetón', tone_lux: 'Lujoso', tone_min: 'Minimalista',
+    tone_bold: 'Audaz', tone_friend: 'Amigable', tone_casual: 'Casual', tone_insp: 'Inspiracional',
+    tone_elegant: 'Elegante', tone_energetic: 'Energético', tone_calm: 'Calma y Confianza',
+    ctype_product: 'Descripción de Producto', ctype_social: 'Publicación en Redes',
+    ctype_email: 'Email de Marketing', ctype_ad: 'Copia Publicitaria', ctype_tagline: 'Eslóganes y Taglines',
+    tab_titles: { brand: 'Nombres de Marca', logo: 'Generador de Logo', content: 'Contenido de Marketing', design: 'Sistema de Diseño', sentiment: 'Analizador de Sentimiento', usp:'Puntos de Venta Únicos', competitors:'Análisis de Competidores', chat: 'Chat de Marca' }
+  },
+  fr: {
+    nav_generate: 'Générer', nav_brand: 'Noms de Marque', nav_logo: 'Générateur de Logo',
+    nav_content: 'Contenu Marketing', nav_analyse: 'Analyser', nav_design: 'Système de Design',
+    nav_sentiment: 'Analyseur de Sentiment', nav_consult: 'Consulter', nav_chat: 'Chat Marque',
+    nav_usp: 'Générateur de USP', nav_competitors: 'Analyse des Concurrents',
+    brand_title: 'Générateur de Noms de Marque',
+    brand_desc: 'Entrez des mots-clés et laissez l\'IA générer des noms de marque créatifs.',
+    brand_label_keywords: 'Mots-Clés / Décrivez Votre Entreprise',
+    brand_placeholder_keywords: 'ex., intelligent, innovant, durable, rapide',
+    brand_btn: '✦ Générer des Noms', loading_brand: 'Génération des noms...', result_brand: 'Noms Générés',
+    logo_title: 'Générateur de Logo', logo_desc: 'Créez des concepts de logo IA et des images SDXL.',
+    logo_label_name: 'Nom de Marque', logo_placeholder_name: 'ex., NovaSpark',
+    logo_label_visual: 'Mots-Clés Visuels', logo_placeholder_visual: 'ex., moderne, minimal, géométrique',
+    logo_btn_concept: '✦ Générer Concept Logo', logo_btn_image: '🖼️ Générer Image (SDXL)',
+    loading_logo: 'Génération du concept logo...', result_logo: 'Concept Logo',
+    result_logo_img: 'Logo Généré', logo_save_hint: 'Clic droit pour sauvegarder votre logo',
+    content_title: 'Contenu Marketing',
+    content_desc: 'Générez descriptions, publications, copies pub, emails et slogans.',
+    content_label_desc: 'Description de Marque', content_placeholder: 'Décrivez votre marque, produit ou service...',
+    content_label_type: 'Type de Contenu', content_btn: '✦ Générer Contenu',
+    loading_content: 'Rédaction en cours...', result_content: 'Contenu Généré',
+    design_title: 'Système de Design', design_desc: 'Obtenez palettes, typographies et identité visuelle par IA.',
+    design_btn: '✦ Obtenir Système de Design', loading_design: 'Construction de la palette...', result_design: 'Système de Design Marque',
+    sentiment_title: 'Analyseur de Sentiment', sentiment_desc: 'Analysez les avis clients et obtenez des réécritures professionnelles.',
+    sentiment_label_review: 'Avis Client / Texte', sentiment_placeholder: 'Collez un avis ici...',
+    sentiment_label_tone: 'Ton de Marque Cible', sentiment_btn: '✦ Analyser et Réécrire',
+    loading_sentiment: 'Analyse du sentiment...', result_sentiment: 'Analyse de Sentiment',
+    chat_title: 'Chat Marque', chat_desc: 'Posez toutes vos questions sur la stratégie de marque.',
+    chat_welcome: 'Bonjour! Je suis votre consultant IA propulsé par IBM Granite. Posez-moi tout — stratégie, noms, logos ou théorie des couleurs. Je suis là! 🚀',
+    chat_placeholder: 'Posez une question sur le branding...', chat_send: 'Envoyer →', chat_try: '💡 Essayez:',
+    chip1: 'Qu\'est-ce qui fait un bon nom de marque?', chip2: 'Comment choisir les couleurs?',
+    chip3: 'Conseils pour brander une startup avec peu de budget?',
+    label_industry: 'Industrie', label_tone: 'Ton de Marque', btn_copy: 'Copier',
+    opt_tech: 'Technologie', opt_health: 'Santé', opt_fashion: 'Mode',
+    opt_food: 'Alimentation', opt_finance: 'Finance', opt_edu: 'Éducation',
+    opt_ecom: 'E-commerce', opt_travel: 'Voyage', opt_realestate: 'Immobilier', opt_other: 'Autre',
+    tone_pro: 'Professionnel', tone_play: 'Ludique', tone_lux: 'Luxueux', tone_min: 'Minimaliste',
+    tone_bold: 'Audacieux', tone_friend: 'Convivial', tone_casual: 'Décontracté', tone_insp: 'Inspirant',
+    tone_elegant: 'Élégant', tone_energetic: 'Énergique', tone_calm: 'Calme et Confiance',
+    ctype_product: 'Description Produit', ctype_social: 'Publication Réseaux Sociaux',
+    ctype_email: 'Email Marketing', ctype_ad: 'Copie Publicitaire', ctype_tagline: 'Slogans et Taglines',
+    tab_titles: { brand: 'Noms de Marque', logo: 'Générateur de Logo', content: 'Contenu Marketing', design: 'Système de Design', sentiment: 'Analyseur de Sentiment', usp:'Points de Vente Uniques', competitors:'Analyse des Concurrents', chat: 'Chat Marque' }
+  },
+  de: {
+    nav_generate: 'Erstellen', nav_brand: 'Markennamen', nav_logo: 'Logo-Generator',
+    nav_content: 'Marketing-Inhalt', nav_analyse: 'Analysieren', nav_design: 'Design-System',
+    nav_sentiment: 'Sentiment-Analyse', nav_consult: 'Beratung', nav_chat: 'Marken-Chat',
+    nav_usp: 'USP-Generator', nav_competitors: 'Wettbewerbsanalyse',
+    brand_title: 'Markennamen-Generator',
+    brand_desc: 'Gib Schlüsselwörter ein und lass die KI kreative, markenschutzfähige Namen generieren.',
+    brand_label_keywords: 'Schlüsselwörter / Beschreibe Dein Unternehmen',
+    brand_placeholder_keywords: 'z.B., smart, innovativ, nachhaltig, schnell',
+    brand_btn: '✦ Markennamen generieren', loading_brand: 'Namen werden generiert...', result_brand: 'Generierte Namen',
+    logo_title: 'Logo-Generator', logo_desc: 'Erstelle KI-gestaltete Logo-Konzepte und SDXL-Bilder.',
+    logo_label_name: 'Markenname', logo_placeholder_name: 'z.B., NovaSpark',
+    logo_label_visual: 'Visuelle Schlüsselwörter', logo_placeholder_visual: 'z.B., modern, minimal, geometrisch',
+    logo_btn_concept: '✦ Logo-Konzept generieren', logo_btn_image: '🖼️ Bild generieren (SDXL)',
+    loading_logo: 'Logo-Konzept wird generiert...', result_logo: 'Logo-Konzept',
+    result_logo_img: 'Generiertes Logo', logo_save_hint: 'Rechtsklick zum Speichern des Logos',
+    content_title: 'Marketing-Inhalt',
+    content_desc: 'Erstelle Produktbeschreibungen, Posts, Anzeigen, E-Mails und Slogans.',
+    content_label_desc: 'Markenbeschreibung', content_placeholder: 'Beschreibe deine Marke, Produkt oder Dienstleistung...',
+    content_label_type: 'Inhaltstyp', content_btn: '✦ Inhalt generieren',
+    loading_content: 'Text wird verfasst...', result_content: 'Generierter Inhalt',
+    design_title: 'Design-System', design_desc: 'Erhalte KI-generierte Farbpaletten, Typografie und visuelle Identität.',
+    design_btn: '✦ Design-System abrufen', loading_design: 'Palette wird erstellt...', result_design: 'Marken-Design-System',
+    sentiment_title: 'Sentiment-Analyse', sentiment_desc: 'Analysiere Kundenbewertungen und erhalte professionelle Umschreibungen.',
+    sentiment_label_review: 'Kundenbewertung / Text', sentiment_placeholder: 'Bewertung hier einfügen...',
+    sentiment_label_tone: 'Ziel-Markenton', sentiment_btn: '✦ Analysieren und umschreiben',
+    loading_sentiment: 'Sentiment wird analysiert...', result_sentiment: 'Sentiment-Analyse',
+    chat_title: 'Marken-Chat', chat_desc: 'Stelle Fragen zu Markenstrategie, Naming, Logos und mehr.',
+    chat_welcome: 'Hallo! Ich bin dein KI-Markenberater, betrieben von IBM Granite. Frag mich alles — Strategie, Namen, Logos oder Farbtheorie. Ich helfe dir! 🚀',
+    chat_placeholder: 'Frage zum Branding stellen...', chat_send: 'Senden →', chat_try: '💡 Frag zum Beispiel:',
+    chip1: 'Was macht einen guten Markennamen aus?', chip2: 'Wie wähle ich Markenfarben?',
+    chip3: 'Tipps für Startup-Branding mit kleinem Budget?',
+    label_industry: 'Branche', label_tone: 'Markenton', btn_copy: 'Kopieren',
+    opt_tech: 'Technologie', opt_health: 'Gesundheitswesen', opt_fashion: 'Mode',
+    opt_food: 'Lebensmittel & Getränke', opt_finance: 'Finanzen', opt_edu: 'Bildung',
+    opt_ecom: 'E-Commerce', opt_travel: 'Reisen', opt_realestate: 'Immobilien', opt_other: 'Sonstige',
+    tone_pro: 'Professionell', tone_play: 'Verspielt', tone_lux: 'Luxuriös', tone_min: 'Minimalistisch',
+    tone_bold: 'Kühn', tone_friend: 'Freundlich', tone_casual: 'Lässig', tone_insp: 'Inspirierend',
+    tone_elegant: 'Elegant', tone_energetic: 'Energetisch', tone_calm: 'Ruhig & Vertrauensvoll',
+    ctype_product: 'Produktbeschreibung', ctype_social: 'Social-Media-Post',
+    ctype_email: 'Marketing-E-Mail', ctype_ad: 'Werbetexte', ctype_tagline: 'Slogans & Taglines',
+    tab_titles: { brand: 'Markennamen', logo: 'Logo-Generator', content: 'Marketing-Inhalt', design: 'Design-System', sentiment: 'Sentiment-Analyse', usp:'Eindeutige Verkaufspunkte', competitors:'Wettbewerbsanalyse', chat: 'Marken-Chat' }
+  }
+};
+
+let currentLang = 'en';
+let activeTab = 'brand';
+
+function applyTranslations(lang) {
+  const t = translations[lang] || translations['en'];
+  // Text content
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  // Placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+  // Topbar title — update to current tab's translated name
+  if (t.tab_titles && t.tab_titles[activeTab]) {
+    document.getElementById('topbar-title').textContent = t.tab_titles[activeTab];
+  }
+}
+
+function toggleLangDropdown() {
+  const trigger = document.getElementById('lang-trigger');
+  const dropdown = document.getElementById('lang-dropdown');
+  const isOpen = dropdown.classList.toggle('open');
+  trigger.classList.toggle('open', isOpen);
+}
+
+function selectLang(el) {
+  const value = el.dataset.value;
+  const flag  = el.dataset.flag;
+  const label = el.dataset.label;
+
+  // Update trigger display
+  document.getElementById('lang-flag').textContent  = flag;
+  document.getElementById('lang-label').textContent = label;
+
+  // Update hidden input and currentLang
+  document.getElementById('lang-select').value = value;
+  currentLang = value;
+
+  // Update selected state
+  document.querySelectorAll('.lang-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+
+  // Close dropdown
+  document.getElementById('lang-dropdown').classList.remove('open');
+  document.getElementById('lang-trigger').classList.remove('open');
+
+  // Apply translations to entire UI
+  applyTranslations(value);
+}
+
+// Close picker when clicking outside
+document.addEventListener('click', function(e) {
+  const picker = document.getElementById('lang-picker');
+  if (!picker.contains(e.target)) {
+    document.getElementById('lang-dropdown').classList.remove('open');
+    document.getElementById('lang-trigger').classList.remove('open');
+  }
+});
+
 function switchTab(tab, el) {
+  activeTab = tab;
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
   el.classList.add('active');
 
-  const titles = {
-    brand: 'Brand Names', logo: 'Logo Generator', content: 'Marketing Content',
-    design: 'Design System', sentiment: 'Sentiment Analyzer', chat: 'Branding Chat'
-  };
-  document.getElementById('topbar-title').textContent = titles[tab] || tab;
-  // Close sidebar on mobile
+  const t = translations[currentLang] || translations['en'];
+  document.getElementById('topbar-title').textContent = (t.tab_titles && t.tab_titles[tab]) || tab;
   document.getElementById('sidebar').classList.remove('open');
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
 function getLang() { return document.getElementById('lang-select').value; }
 
 async function postAPI(endpoint, body) {
@@ -717,8 +1285,7 @@ async function postAPI(endpoint, body) {
 function showResult(resultId, loadingId, content) {
   document.getElementById(loadingId).classList.remove('show');
   const card = document.getElementById(resultId);
-  const contentEl = document.getElementById(resultId + '-content');
-  contentEl.textContent = content;
+  document.getElementById(resultId + '-content').textContent = content;
   card.classList.add('show');
 }
 
@@ -729,20 +1296,15 @@ function startLoading(loadingId, resultId) {
 
 function showError(resultId, loadingId, msg) {
   document.getElementById(loadingId).classList.remove('show');
-  const card = document.getElementById(resultId);
-  const contentEl = document.getElementById(resultId + '-content');
-  contentEl.textContent = '❌ ' + msg;
-  card.classList.add('show');
+  document.getElementById(resultId + '-content').textContent = '❌ ' + msg;
+  document.getElementById(resultId).classList.add('show');
 }
 
 function copyResult(id) {
-  const text = document.getElementById(id).textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    alert('Copied to clipboard!');
-  });
+  navigator.clipboard.writeText(document.getElementById(id).textContent)
+    .then(() => alert('Copied to clipboard!'));
 }
 
-// ── Brand Names ──────────────────────────────────────────────────────────────
 async function generateBrandNames() {
   const keywords = document.getElementById('brand-keywords').value.trim();
   if (!keywords) { alert('Please enter keywords first.'); return; }
@@ -758,7 +1320,6 @@ async function generateBrandNames() {
   } catch(e) { showError('brand-result', 'brand-loading', e.message); }
 }
 
-// ── Logo ─────────────────────────────────────────────────────────────────────
 let currentLogoPrompt = '';
 
 async function generateLogoPrompt() {
@@ -799,7 +1360,6 @@ async function generateLogoImage() {
   btn.disabled = false; btn.innerHTML = '🖼️ Generate Image (SDXL)';
 }
 
-// ── Content ──────────────────────────────────────────────────────────────────
 async function generateContent() {
   const desc = document.getElementById('content-desc').value.trim();
   if (!desc) { alert('Please enter a brand description.'); return; }
@@ -815,7 +1375,6 @@ async function generateContent() {
   } catch(e) { showError('content-result', 'content-loading', e.message); }
 }
 
-// ── Design System ─────────────────────────────────────────────────────────────
 async function getDesignSystem() {
   startLoading('design-loading', 'design-result');
   document.getElementById('color-swatches').innerHTML = '';
@@ -826,7 +1385,6 @@ async function getDesignSystem() {
     });
     document.getElementById('design-loading').classList.remove('show');
     document.getElementById('design-result-content').textContent = data;
-    // Extract HEX codes and render swatches
     const hexes = [...data.matchAll(/#([0-9A-Fa-f]{6})\b/g)].map(m => '#' + m[1]);
     const swatchContainer = document.getElementById('color-swatches');
     hexes.slice(0, 8).forEach(hex => {
@@ -835,14 +1393,13 @@ async function getDesignSystem() {
       div.style.background = hex;
       div.title = hex;
       div.innerHTML = `<span class="swatch-tooltip">${hex}</span>`;
-      div.onclick = () => navigator.clipboard.writeText(hex).then(()=>alert('Copied ' + hex));
+      div.onclick = () => navigator.clipboard.writeText(hex).then(() => alert('Copied ' + hex));
       swatchContainer.appendChild(div);
     });
     document.getElementById('design-result').classList.add('show');
   } catch(e) { showError('design-result', 'design-loading', e.message); }
 }
 
-// ── Sentiment ─────────────────────────────────────────────────────────────────
 async function analyzeSentiment() {
   const text = document.getElementById('sentiment-text').value.trim();
   if (!text) { alert('Please paste a review.'); return; }
@@ -856,28 +1413,61 @@ async function analyzeSentiment() {
   } catch(e) { showError('sentiment-result', 'sentiment-loading', e.message); }
 }
 
-// ── Chat ──────────────────────────────────────────────────────────────────────
+// Inside branding.html <script> tag
+
+async function generateUSP() {
+  const desc = document.getElementById('usp-desc').value;
+  // Get the selected language from your language picker data attribute or global variable
+  const lang = document.getElementById('lang-select')?.value || 'en'; 
+
+  startLoading('usp-loading', 'usp-result');
+  try {
+    const data = await postAPI('/api/generate-usp', { 
+      description: desc, 
+      language: lang 
+    });
+    showResult('usp-result', 'usp-loading', data);
+  } catch (e) {
+    showError('usp-result', 'usp-loading', "Connection Error: " + e.message);
+  }
+}
+
+async function generateCompetitorAnalysis() {
+  const brand = document.getElementById('comp-brand-name').value;
+  const industry = document.getElementById('comp-industry').value;
+  const comps = document.getElementById('comp-list').value;
+  const lang = document.getElementById('lang-select')?.value || 'en';
+
+  startLoading('comp-loading', 'comp-result');
+  try {
+    const data = await postAPI('/api/analyze-competitors', {
+      brand_name: brand,
+      industry: industry,
+      competitors: comps,
+      language: lang
+    });
+    showResult('comp-result', 'comp-loading', data);
+  } catch (e) {
+    showError('comp-result', 'comp-loading', "Connection Error: " + e.message);
+  }
+}
+
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
   if (!msg) return;
   input.value = '';
-
   const win = document.getElementById('chat-window');
-  // Add user message
   win.innerHTML += `<div class="msg user"><div class="msg-sender">You</div>${escapeHtml(msg)}</div>`;
   win.scrollTop = win.scrollHeight;
-
-  // Typing indicator
   const typingId = 'typing-' + Date.now();
-  win.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-sender">BizForge AI</div><span style="opacity:0.5">Thinking...</span></div>`;
+  win.innerHTML += `<div class="msg bot" id="${typingId}"><div class="msg-sender">InKraft AI</div><span style="opacity:0.5">Thinking...</span></div>`;
   win.scrollTop = win.scrollHeight;
-
   try {
     const data = await postAPI('/api/chat', { message: msg });
-    document.getElementById(typingId).innerHTML = `<div class="msg-sender">BizForge AI</div>${escapeHtml(data.content || data)}`;
+    document.getElementById(typingId).innerHTML = `<div class="msg-sender">InKraft AI</div>${escapeHtml(data.content || data)}`;
   } catch(e) {
-    document.getElementById(typingId).innerHTML = `<div class="msg-sender">BizForge AI</div>❌ ${e.message}`;
+    document.getElementById(typingId).innerHTML = `<div class="msg-sender">InKraft AI</div>❌ ${e.message}`;
   }
   win.scrollTop = win.scrollHeight;
 }

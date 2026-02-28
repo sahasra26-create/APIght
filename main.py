@@ -8,7 +8,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app = FastAPI(title="BizForge API", version="1.0.0")
+app = FastAPI(title="InKraft API", version="1.0.0")
+
+
+origins = [
+    "http://localhost:3000", # Common React port
+    "http://localhost:5173", # Common Vite/React port
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+]
+
 
 # CORS
 app.add_middleware(
@@ -24,7 +33,7 @@ frontend_path = Path(__file__).parent.parent / "frontend"
 app.mount("/static", StaticFiles(directory=str(frontend_path / "static")), name="static")
 
 # Import AI services
-from backend.ai_services import (
+from ai_services import (
     generate_brand_names,
     generate_marketing_content,
     analyze_sentiment,
@@ -32,6 +41,8 @@ from backend.ai_services import (
     chat_with_ai,
     generate_logo_prompt,
     generate_logo_image,
+    unique_selling_points,
+    analyze_competitors
 )
 
 # ─────────────────── ROUTES ───────────────────
@@ -82,6 +93,7 @@ async def analyze_sentiment_endpoint(request: dict):
         result = await analyze_sentiment(
             request.get("text", ""),
             request.get("brand_tone", "Professional"),
+            request.get("language", "en")
         )
         return {"success": True, "data": result}
     except Exception as e:
@@ -94,6 +106,7 @@ async def get_colors_endpoint(request: dict):
         result = await get_color_palette(
             request.get("tone", "Professional"),
             request.get("industry", "Technology"),
+            request.get("language", "en")
         )
         return {"success": True, "data": result}
     except Exception as e:
@@ -116,6 +129,7 @@ async def generate_logo_endpoint(request: dict):
             request.get("brand_name", ""),
             request.get("industry", ""),
             request.get("keywords", ""),
+            request.get("language", "en")
         )
         return {"success": True, "data": result}
     except Exception as e:
@@ -123,17 +137,52 @@ async def generate_logo_endpoint(request: dict):
 
 # Logo Image (SDXL)
 @app.post("/api/generate-logo-image")
-async def generate_gemini_image_endpoint(request: dict):
+async def generate_logo_image_endpoint(request: dict):
     try:
-        result = await generate_gemini_image(request.get("prompt", ""))
+        result = await generate_logo_image(request.get("prompt", ""))
         return {"success": True, "data": result}
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+# Add this new route near your other @app.post routes
+@app.post("/api/generate-usp")
+async def generate_usp_endpoint(request: dict):
+    try:
+        description = request.get("description", "")
+        industry = request.get("industry", "")
+        language = request.get("language", "en")
+        result = await unique_selling_points(description, industry, language)
+        
+        clean_result = result.replace("*", "")
+        clean_result1 = clean_result.replace("#","")
+        
+        return {"success": True, "data": clean_result1}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+# Add this new route in main.py
+@app.post("/api/analyze-competitors")
+async def competitors_endpoint(request: dict):
+    try:
+
+        brand = request.get("brand_name", "My Brand")
+        industry = request.get("industry", "General")
+        competitors = request.get("competitors", "")
+        language = request.get("language", "en")
+        
+        if not competitors:
+            raise HTTPException(status_code=400, detail="Please provide at least one competitor.")
+            
+        result = await analyze_competitors(brand, industry, competitors, language)
+        clean_result = result.replace("*", "")
+        clean_result1 = clean_result.replace("#","")
+        return {"success": True, "data": clean_result1}
+        
+    except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
     print("\n" + "="*60)
-    print("🚀  BizForge Backend Started!")
+    print("🚀  InKraft Backend Started!")
     print("="*60)
     print("🌐  API running at http://localhost:8000")
     print("📁  Frontend path:", frontend_path)
